@@ -87,13 +87,13 @@ cloudflare.verifyToken().then(() => {
 }).then((hash) => {
   log(util.format('[INFO] Pinned IPFS hash locally: %s', hash).green)
 
+  return ipfs.stick(hash, 'checkpoints.csv')
+}).then((hash) => {
+  log(util.format('[INFO] Pinned IPFS hash via Pinata: %s', hash).green)
+
   return cloudflare.setIPFSDNSLink(process.env.CLOUDFLARE_ZONE_ID, process.env.CLOUDFLARE_SUBDOMAIN, hash)
 }).then((info) => {
   log(util.format('[INFO] Updated Cloudflare IPFS DNSlink record for [%s] to: %s', process.env.CLOUDFLARE_SUBDOMAIN, info.hash).green)
-
-  return ipfs.stick(info.hash, 'checkpoints.csv')
-}).then((hash) => {
-  log(util.format('[INFO] Pinned IPFS hash via Pinata: %s', hash).green)
 
   return ipfs.stop()
 }).then(() => {
