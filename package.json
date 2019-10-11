@@ -1,0 +1,28 @@
+{
+  "name": "checkpoint-service",
+  "version": "0.0.1",
+  "description": "TurtleCoin Checkpoint Generation Helper",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard"
+  },
+  "keywords": [
+    "TurtleCoin",
+    "Checkpoint",
+    "Service"
+  ],
+  "author": "The TurtleCoin Developers",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "@pinata/sdk": "^1.1.1",
+    "colors": "^1.4.0",
+    "dotenv": "^8.1.0",
+    "ipfs": "^0.38.0",
+    "read-last-lines": "^1.7.1",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7"
+  },
+  "devDependencies": {
+    "standard": "^14.3.1"
+  }
+}
