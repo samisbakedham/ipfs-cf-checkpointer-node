@@ -30,7 +30,12 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV.toLowerCase() !== 'production'
   log('[WARNING] Node.js is not running in production mode. Consider running in production mode: export NODE_ENV=production'.yellow)
 }
 
-const ipfs = new IPFSHelper(process.env.PINATA_API_KEY, process.env.PINATA_SECRET_API_KEY)
+const ipfs = new IPFSHelper(
+  process.env.IPFS_HOST || '127.0.0.1',
+  process.env.IPFS_PORT || 5001,
+  process.env.PINATA_API_KEY,
+  process.env.PINATA_SECRET_API_KEY
+)
 
 const cloudflare = new CloudflareHelper(process.env.CLOUDFLARE_TOKEN)
 
@@ -51,9 +56,6 @@ ipfs.on('pinPending', hash => {
 
 cloudflare.verifyToken().then(() => {
   log('[INFO] Cloudflare Token Verified'.green)
-  return ipfs.start()
-}).then(() => {
-  log('[INFO] IPFS subsystem started'.green)
 
   return CheckPointsHelper.lastCheckPoint(checkpointsFile)
 }).then((height) => {
@@ -94,8 +96,6 @@ cloudflare.verifyToken().then(() => {
   return cloudflare.setIPFSDNSLink(process.env.CLOUDFLARE_ZONE_ID, process.env.CLOUDFLARE_SUBDOMAIN, hash)
 }).then((info) => {
   log(util.format('[INFO] Updated Cloudflare IPFS DNSlink record for [%s] to: %s', process.env.CLOUDFLARE_SUBDOMAIN, info.hash).green)
-
-  return ipfs.stop()
 }).then(() => {
   log('[INFO] Process complete. Exiting...'.green)
 }).catch((error) => {
