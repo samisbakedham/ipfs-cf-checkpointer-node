@@ -4,13 +4,18 @@
   "description": "TurtleCoin Checkpoint Generation Helper",
   "main": "index.js",
   "scripts": {
-    "test": "standard"
+    "test": "standard",
+    "start": "node index.js"
   },
   "keywords": [
     "TurtleCoin",
     "Checkpoint",
     "Service"
   ],
+  "engines": {
+    "node": ">=8"
+  },
+  "engineStrict": true,
   "author": "The TurtleCoin Developers",
   "license": "GPL-3.0",
   "dependencies": {
