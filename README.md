@@ -37,10 +37,6 @@ yarn start
 yarn test
 ```
 
-## Known Bugs
-
-1) The script will not complete until [Pinata-SDK PR #7](https://github.com/PinataCloud/Pinata-SDK/pull/7) is completely published without that patch being manually applied to the Pinata-SDK webpacked file(s).
-
 ## Author
 
 👤 **The TurtleCoin Developers**

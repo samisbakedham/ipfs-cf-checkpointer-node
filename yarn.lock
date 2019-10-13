@@ -18,10 +18,10 @@
     esutils "^2.0.2"
     js-tokens "^4.0.0"
 
-"@pinata/sdk@^1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@pinata/sdk/-/sdk-1.1.2.tgz#406c0cbcd913692aca65623f546554e7c4154d1c"
-  integrity sha512-VR8X9p0gcitU1FvQVgxUpRrbCGdQrnY60/Ald0DEZTlUn9uLnPPszT2agHimTg5dmOJKJ9vKOSZwQdfbJPJjOg==
+"@pinata/sdk@^1.1.3":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@pinata/sdk/-/sdk-1.1.3.tgz#a608a7420f33f5b6308e4d8f77851d2baefda86e"
+  integrity sha512-whptV8hfQJtBqfPFL6vM88owLoq/favgglf0xpmNYXfMnHZ6e4CxPSbgZyRMeD6OXxNSa6oQIG2PlbhORLYjng==
   dependencies:
     axios "^0.18.0"
     base-path-converter "^1.0.1"
@@ -30,9 +30,9 @@
     recursive-fs "^1.1.2"
 
 acorn-jsx@^5.0.2:
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/acorn-jsx/-/acorn-jsx-5.0.2.tgz#84b68ea44b373c4f8686023a551f61a21b7c4a4f"
-  integrity sha512-tiNTrP1MP0QrChmD2DdupCr6HWSFeKVw5d/dHTu4Y7rkAkRhU/Dt7dphAfIUyxtHpl/eBVip5uTNSpQJHylpAw==
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/acorn-jsx/-/acorn-jsx-5.1.0.tgz#294adb71b57398b0680015f0a38c563ee1db5384"
+  integrity sha512-tMUqwBWfLFbJbizRmEcWSLw6HnFzfdJs2sOJEOwwtVPMoH/0Ay+E703oZz78VSXZiiDcZrQ5XKjPIUQixhmgVw==
 
 acorn@^7.0.0:
   version "7.1.0"
