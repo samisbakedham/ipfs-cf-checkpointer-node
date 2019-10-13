@@ -8,7 +8,7 @@ require('colors')
 require('dotenv').config()
 const CheckPointsHelper = require('./lib/checkpoints')
 const CloudflareHelper = require('./lib/cloudflare')
-const IPFSHelper = require('./lib/ipfs')
+const PinataHelper = require('./lib/pinata')
 const path = require('path')
 const util = require('util')
 
@@ -30,9 +30,7 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV.toLowerCase() !== 'production'
   log('[WARNING] Node.js is not running in production mode. Consider running in production mode: export NODE_ENV=production'.yellow)
 }
 
-const ipfs = new IPFSHelper(
-  process.env.IPFS_HOST || '127.0.0.1',
-  process.env.IPFS_PORT || 5001,
+const ipfs = new PinataHelper(
   process.env.PINATA_API_KEY,
   process.env.PINATA_SECRET_API_KEY
 )
@@ -71,6 +69,8 @@ cloudflare.verifyToken().then(() => {
 
   if (checkpointsToGenerate < 0) {
     throw new Error('The current checkpoints file contains more blocks than the configured delay allows. Cancelling...')
+  } else if (checkpointsToGenerate === 0) {
+    throw new Error('There are no checkpoints to add to the file. Cancelling...')
   }
 
   log(util.format('[INFO] Updating checkpoints to block: %s (%s blocks)', networkHeight - checkpointsDelay, checkpointsToGenerate).green)
@@ -78,24 +78,25 @@ cloudflare.verifyToken().then(() => {
   return CheckPointsHelper.retrieveCheckPoints(lastKnownHeight, checkpointsStop)
 }).then((checkpoints) => {
   return CheckPointsHelper.addCheckPointsToFile(checkpointsFile, checkpoints)
-}).then(() => {
+}).then((fileSize) => {
   log(util.format('[INFO] Updated checkpoints in: %s', checkpointsFile).green)
+  log(util.format('[INFO] Checkpoints file size is: %sMB', parseInt(fileSize / 1024 / 1024)).yellow)
+}).then(() => {
+  log('[INFO] Uploading file to PIN via Pinata'.green)
 
-  return ipfs.addFile(checkpointsFile)
-}).then((result) => {
-  log(util.format('[INFO] IPFS Hash: %s', result.hash).green)
-
-  return ipfs.pin(result.hash)
-}).then((hash) => {
-  log(util.format('[INFO] Pinned IPFS hash locally: %s', hash).green)
-
-  return ipfs.stick(hash, 'checkpoints.csv')
+  return ipfs.pinFile(checkpointsFile)
 }).then((hash) => {
   log(util.format('[INFO] Pinned IPFS hash via Pinata: %s', hash).green)
 
   return cloudflare.setIPFSDNSLink(process.env.CLOUDFLARE_ZONE_ID, process.env.CLOUDFLARE_SUBDOMAIN, hash)
 }).then((info) => {
   log(util.format('[INFO] Updated Cloudflare IPFS DNSlink record for [%s] to: %s', process.env.CLOUDFLARE_SUBDOMAIN, info.hash).green)
+
+  return ipfs.cleanFiles(info.hash, checkpointsFile)
+}).then((hashes) => {
+  hashes.forEach((hash) => {
+    log(util.format('[INFO] Unpinned hash: %s', hash).yellow)
+  })
 }).then(() => {
   log('[INFO] Process complete. Exiting...'.green)
 }).catch((error) => {
