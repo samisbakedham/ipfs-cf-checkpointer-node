@@ -41,7 +41,7 @@ const checkpointsFile = path.resolve(process.env.CHECKPOINT_FILE || './checkpoin
 const checkpointsDelayDays = process.env.CHEcKPOINT_DELAY || 1
 const checkpointsDelay = checkpointsDelayDays * 2880
 
-var lastKnownHeight = -1
+let lastKnownHeight = -1
 
 ipfs.on('error', error => {
   log(util.format('[ERROR] %s', error.toString()).red)
